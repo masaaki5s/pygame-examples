@@ -10,3 +10,5 @@ PyGameを用いた簡単なゲーム
 ![screenshot](screenshot/invader.png)
 1. Flappybird
 ![screenshot](screenshot/flappybird.png)
+1. TicTacToe
+![screenshot](screenshot/tictactoe.png)
