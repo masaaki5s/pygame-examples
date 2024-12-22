@@ -55,6 +55,28 @@ def check_winner(board):
     return 0
 
 def computer_move(board, player):
+    for p in [player, -player]:
+        for i in range(3):
+            if sum(board[i]) == p * 2:
+                j = board[i].index(0)
+                return (i, j)            
+
+        for j in range(3):
+            s = [board[i][j] for i in range(3)]
+            if sum(s) == p * 2:
+                i = s.index(0)
+                return (i, j)
+
+        s = [board[i][i] for i in range(3)]
+        if sum(s) == p * 2:
+            i = s.index(0)
+            return (i, i)
+
+        s = [board[i][2-i] for i in range(3)]
+        if sum(s) == p * 2:
+            i = s.index(0)
+            return (i, 2-i)
+
     moves = empty_cells(board)
     return random.choice(moves)
 

@@ -6,11 +6,11 @@ import pygame as pg
 from tictactoe import X, O, EMPTY, TIE, initial_board, computer_move, check_winner
 from time import sleep
 
-pg.init()
-W, H = 800, 600
-SIZE = 150
-X0, Y0 = int(W/2 - (1.5 * SIZE)), int(H/2 - (1.5 * SIZE))
+SIZE = 150                 # マスのサイズ
+X0 = Y0 = SIZE // 2        # 画面のマージン
+W = H = SIZE * 4           # 画面サイズ
 
+pg.init()
 screen = pg.display.set_mode((W, H))
 clock = pg.time.Clock()
 
@@ -34,8 +34,8 @@ def draw_symbol(pos, symbol):
 
 def select_symbol(x, y):
     draw_text("Select O or X",  W//2, 50)
-    maru = pg.Rect(150, 300, 200, 200)
-    batu = pg.Rect(450, 300, 200, 200)
+    maru = pg.Rect(SIZE*0.5, SIZE*1.5, SIZE, SIZE)
+    batu = pg.Rect(SIZE*2.5, SIZE*1.5, SIZE, SIZE)
     pg.draw.rect(screen, 'white', maru)
     pg.draw.rect(screen, 'white', batu)
     draw_symbol(maru.center, O)
@@ -57,12 +57,12 @@ def draw_board(board):
 def draw_result(board, x, y):
     draw_board(board)
     if winner == TIE:
-        draw_text("Draw !",  W//2, 50)
+        draw_text("Draw !",  W//2, 30)
     elif winner == human:
-        draw_text("You won !",  W//2, 50)
+        draw_text("You won !",  W//2, 30)
     else:
-        draw_text("Computer won !",  W//2, 50)
-    rect = draw_text('Play again', 400, H - 30, font_color='black', bg_color='white')
+        draw_text("Computer won !",  W//2, 30)
+    rect = draw_text('Play again', W // 2, H - 30, font_color='black', bg_color='white')
     if x is not None and rect.collidepoint(x, y):
         return True
 
