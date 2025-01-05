@@ -93,7 +93,7 @@ while True:
             move = human_move(board, x, y)
         else:
             move = computer_move(board, player)
-            sleep(0.3)          # 考えているフリをする
+            # sleep(0.3)          # 考えているフリをする
         if move is not None:
             board[move[0]][move[1]] = player
             player = -player

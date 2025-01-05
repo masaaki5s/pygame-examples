@@ -54,31 +54,38 @@ def check_winner(board):
         return TIE
     return 0
 
-def computer_move(board, player):
-    for p in [player, -player]:
-        for i in range(3):
-            if sum(board[i]) == p * 2:
-                j = board[i].index(0)
-                return (i, j)            
-
-        for j in range(3):
-            s = [board[i][j] for i in range(3)]
-            if sum(s) == p * 2:
-                i = s.index(0)
-                return (i, j)
-
-        s = [board[i][i] for i in range(3)]
-        if sum(s) == p * 2:
-            i = s.index(0)
-            return (i, i)
-
-        s = [board[i][2-i] for i in range(3)]
-        if sum(s) == p * 2:
-            i = s.index(0)
-            return (i, 2-i)
-
+def minimax(player, board):
+    winner = check_winner(board)
+    if winner == player:
+        return 1
+    elif winner == -player:
+        return -1
+    elif winner == TIE:
+        return 0
+    
+    maxval = -999
     moves = empty_cells(board)
-    return random.choice(moves)
+    for i, j in moves:
+        board[i][j] = player
+        val = minimax(-player, board)
+        board[i][j] = EMPTY
+        if -val > maxval:
+            maxval = -val
+    return maxval
+
+def computer_move(board, player):
+    WIN, LOS, DRW = -1, 1, 0
+    evals = {WIN:[], LOS:[], DRW:[]}
+    moves = empty_cells(board)
+    for i, j in moves:
+        board[i][j] = player
+        val = minimax(-player, board)
+        board[i][j] = EMPTY
+        evals[val].append((i, j))
+    for r in [WIN, DRW, LOS]:
+        if evals[r]:
+            return random.choice(evals[r])
+
 
 def human_move(board, player):
     while True:
