@@ -1,4 +1,5 @@
 """ Mine Sweeper """
+import sys
 import pygame as pg
 from random import randint
 
@@ -7,8 +8,7 @@ NUM_MINES = 10              # 地雷の数（ゲームをクリアするごと�
 HEADER = int(PXL * 1.5)     # タイトル部分の高さ
 UNK, MINE = -1, -2          # UNK:未知, MINE:地雷
 RESET = (-1, -1)            # リセットボタンが押された
-DIRECTIONS = [(0,1),(0,-1),(1,0),(1,1),(1,-1),(-1,1),(-1,0),(-1,-1)]
-COORDINATES = [(w, h) for w in range(W) for h in range(H)]
+AROUND = [(0,1),(0,-1),(1,0),(1,1),(1,-1),(-1,1),(-1,0),(-1,-1)]
 COLOR_MAP = ['blue', 'green', 'red', 'red', 'red', 'red', 'red', 'red']
 
 def initialize_game():
@@ -47,21 +47,22 @@ def draw_screen(field_map):
     to_clear = H * W if cleared_cells == 0 else H * W - NUM_MINES - cleared_cells
     draw_text(W * PXL * 0.7, PXL * 0.2, f'{to_clear:03d}', 55, 'darkred')
 
-    for (w, h) in COORDINATES:
-        rect = pg.Rect(w * PXL, HEADER + h * PXL, PXL-2, PXL-2)
-        pg.draw.rect(screen, 'gray', rect)
-        s = field_map[h][w]
-        if s == UNK:
-            screen.blit(images['square'], rect)
-        if s == MINE:
-            screen.blit(images['mine'], rect)
-        if s >= 1:
-            draw_text(w * PXL, HEADER + h * PXL, str(s), 45, COLOR_MAP[s-1])
+    for h in range(H):
+        for w in range(W):
+            rect = pg.Rect(w * PXL, HEADER + h * PXL, PXL-2, PXL-2)
+            pg.draw.rect(screen, 'gray', rect)
+            s = field_map[h][w]
+            if s == UNK:
+                screen.blit(images['square'], rect)
+            if s == MINE:
+                screen.blit(images['mine'], rect)
+            if s >= 1:
+                draw_text(w * PXL, HEADER + h * PXL, str(s), 45, COLOR_MAP[s-1])
 
 
 def count_neighbor_mines(pos):
     cnt = 0
-    for dw, dh in DIRECTIONS:
+    for dw, dh in AROUND:
         if (pos[0] + dw, pos[1] + dh) in mine_pos:
             cnt += 1
     return cnt
@@ -74,7 +75,7 @@ def sweep_mines(pos):
     cleared_cells += 1
     if count != 0:
         return
-    for dw, dh in DIRECTIONS:
+    for dw, dh in AROUND:
         ww, hh = pos[0] + dw, pos[1] + dh
         if 0 <= ww < W and 0 <= hh < H and field_map[hh][ww] == UNK:
             sweep_mines((ww, hh))
@@ -96,12 +97,12 @@ for key, name in files.items():
 header_rect = pg.Rect(0, 0, W * PXL, HEADER)
 reset_button = images['smile'].get_rect(center=header_rect.center)
 
-running = True
 game_status = None
-while running:
+while True:
     for e in pg.event.get():
         if e.type == pg.QUIT:
-            running = False
+            pg.quit()
+            sys.exit()
 
     pos = get_mouse_click()
     if game_status is None or pos == RESET:
@@ -123,5 +124,3 @@ while running:
     draw_screen(field_map)
     pg.display.flip()
     clock.tick(10)
-
-pg.quit()
