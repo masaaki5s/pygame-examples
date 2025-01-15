@@ -12,3 +12,5 @@ PyGameを用いた簡単なゲーム
 ![screenshot](screenshot/flappybird.png)
 1. TicTacToe
 ![screenshot](screenshot/tictactoe.png)
+1. Mine Sweeper
+![screenshot](screenshot/minesweeper.png)
