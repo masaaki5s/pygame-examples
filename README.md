@@ -14,3 +14,5 @@ PyGameを用いた簡単なゲーム
 ![screenshot](screenshot/tictactoe.png)
 1. Mine Sweeper
 ![screenshot](screenshot/minesweeper.png)
+1. Tetris
+![screenshot](screenshot/tetris.png)
