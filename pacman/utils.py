@@ -14,6 +14,7 @@ def get_image(x0, y0, w, h, c, r, sizex, sizey):
 
 
 def get_sprite(sprite_key, sizex, sizey):
+    """ スプライトシート上の座標，サイズ，縦横の個数 """
     Z = {'maze':(0, 0, 228, 248, 1, 1),
         'pacman':(228, 0, 16, 16, 3, 4),
         'red':(228, 64, 16, 16, 8, 1),

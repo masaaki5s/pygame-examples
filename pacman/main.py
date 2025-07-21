@@ -9,9 +9,9 @@ W, H = 600, 600
 screen = pg.display.set_mode((W, H))
 clock = pg.time.Clock()
 
-pacman = Pacman('pacman', 100, 200, 2)
-red_ghost = Ghost('red', 300, 300, 3)
-maze = Maze(224*2, 248*2)    # TODO: ドットサイズをMazeに隠蔽すること
+maze = Maze()
+pacman = Pacman('pacman', 0, 14, maze)
+red_ghost = Ghost('red', 12, 14, maze)
 
 while True:
     for e in pg.event.get():
@@ -27,4 +27,4 @@ while True:
     pacman.draw(screen)
     red_ghost.draw(screen)
     pg.display.flip()
-    clock.tick(15)
+    clock.tick(10)
