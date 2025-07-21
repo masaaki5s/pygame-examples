@@ -1,3 +1,4 @@
+import random
 import pygame as pg
 import utils
 
@@ -12,6 +13,8 @@ class Sprite:
         self.sprite = utils.get_sprite(sprite_id, 32, 32)
 
     def update(self):
+        self.x += self.dir[0] * self.speed     # スプライトの中心位置を移動
+        self.y += self.dir[1] * self.speed        
         self.sprite_idx = (self.sprite_idx + 1) % len(self.sprite[(0,1)])
 
     def draw(self, surf):
@@ -25,10 +28,17 @@ class Pacman(Sprite):
     def update(self):
         dirs = {pg.K_LEFT:(-1, 0), pg.K_RIGHT:(1, 0), pg.K_UP:(0, -1), pg.K_DOWN:(0, 1)}
         keys = pg.key.get_pressed()
-        for k in dirs:                             # 矢印キーに応じて方向を変える
+        for k in dirs:                        # 矢印キーに応じて方向を変える
             if keys[k]:
                 self.dir = dirs[k]
+        super().update()        
 
-        self.x += self.dir[0] * self.speed         # パックマンの中心位置を移動
-        self.y += self.dir[1] * self.speed
-        self.sprite_idx = (self.sprite_idx + 1) % 3
+
+class Ghost(Sprite):
+    def __init__(self, sprite_id, x, y, speed=2):
+        super().__init__(sprite_id, x, y, speed)
+
+    def update(self):
+        if random.random() < 0.2:
+            self.dir = random.choice(((-1,0),(1,0),(0,1),(0,-1)))        
+        super().update()        
